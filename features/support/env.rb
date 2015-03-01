@@ -2,11 +2,7 @@
 RACK_ENV = 'test' unless defined?(RACK_ENV)
 require_relative '../../test_rack_app'
 
-require 'rspec'
-require 'rack/test'
+require 'capybara/cucumber'
+require 'rspec/expectations'
 
-include Rack::Test::Methods
-
-def app
-  TestRackApp.new
-end
+Capybara.app = TestRackApp.new

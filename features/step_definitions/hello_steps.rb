@@ -1,20 +1,20 @@
 # encoding: utf-8
 もし(/^トップページにアクセスした$/) do
-  get "/"
+  visit "/"
 end
 
 ならば(/^フォームの送信先が "(.*?)" であること$/) do |path|
-  expect(last_response.body).to match(/<form[^>]+action="#{path}"/)
+  expect(page.find('form')['action']).to eq(path)
 end
 
 ならば(/^送信ボタンに "(.*?)" と表示されていること$/) do |val|
-  expect(last_response.body).to match(/<input[^>]+type="submit"[^>]+id="hello_button"[^>]+value="#{val}"/)
+  expect(page.find('input[type="submit"]#hello_button')['value']).to eq(val)
 end
 
-もし(/^Helloページにフォームから飛ばされた$/) do
-  post "/hello"
+もし(/^送信ボタンをクリックした$/) do
+  page.find('input[type="submit"]#hello_button').click
 end
 
 ならば(/^"(.*?)" とメッセージが表示されていること$/) do |msg|
-  expect(last_response.body).to match(/<div[^>]+class="hello_msg".*?>\s*#{msg}\s*<\/div>/)
+  expect(page.find('div.hello_msg').text).to eq(msg)
 end
