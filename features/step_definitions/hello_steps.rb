@@ -1,20 +1,22 @@
 # encoding: utf-8
-もし(/^トップページにアクセスした$/) do
-  visit "/"
+もし(/^".*?\((.*?)\)" にアクセスし(?:、|た)$/) do |t_path|
+  visit t_path
 end
 
-ならば(/^フォームの送信先が "(.*?)" であること$/) do |path|
+もし(/^".*?\((.*?)\)" をクリックし(?:、|た)$/) do |t_css|
+  page.find(t_css).click
+end
+
+ならば(/^".*?\((.*?)\)" に "(.*?)" と表示され(?:、|ていること)$/) do |t_css, t_str|
+  target_elem = page.find(t_css)
+  case target_elem.tag_name
+  when 'input', 'option'
+    expect(target_elem.value).to eq(t_str)
+  else
+    expect(target_elem.text).to eq(t_str)
+  end
+end
+
+ならば(/^フォームの送信先が "(.*?)" であ(?:り、|ること)$/) do |path|
   expect(page.find('form')['action']).to eq(path)
-end
-
-ならば(/^送信ボタンに "(.*?)" と表示されていること$/) do |val|
-  expect(page.find('input[type="submit"]#hello_button')['value']).to eq(val)
-end
-
-もし(/^送信ボタンをクリックした$/) do
-  page.find('input[type="submit"]#hello_button').click
-end
-
-ならば(/^"(.*?)" とメッセージが表示されていること$/) do |msg|
-  expect(page.find('div.hello_msg').text).to eq(msg)
 end
