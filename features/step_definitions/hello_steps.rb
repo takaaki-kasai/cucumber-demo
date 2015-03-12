@@ -3,11 +3,10 @@
   visit t_path
 end
 
-もし(/^".*?\((.*?)\)" をクリックし(?:、|た)$/) do |t_css|
+もし(/^".*?\((.*?)\)" をクリックし(?:、|た)(\(非同期\))?$/) do |t_css, t_async|
+  wait_for_ajax if t_async
   page.find(t_css).click
 end
-
-#===
 
 もし(/^".*?\((.*?)\)" に "(.*?)" と入力し(?:、|た)$/) do |t_css, t_with|
   page.find(t_css).set(t_with)
@@ -22,8 +21,6 @@ end
 ならば(/^".*?\((.*?)\)" が (\d+) 個であ(?:り、|ること)$/) do |t_css, t_count|
   expect(page).to have_css(t_css, :count => t_count)
 end
-
-#===
 
 ならば(/^".*?\((.*?)\)" に "(.*?)" と表示され(?:、|ていること)$/) do |t_css, t_str|
   target_elem = page.find(t_css)
