@@ -18,6 +18,10 @@ end
   target_node_option.select_option
 end
 
+ならば(/^".*?\((.*?)\)" が表示され(?:、|ていること)$/) do |t_css|
+  expect(page).to have_css(t_css)
+end
+
 ならば(/^".*?\((.*?)\)" が (\d+) 個であ(?:り、|ること)$/) do |t_css, t_count|
   expect(page).to have_css(t_css, :count => t_count)
 end

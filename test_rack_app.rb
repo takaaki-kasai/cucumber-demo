@@ -27,7 +27,7 @@ class TestRackApp
     html = <<-EOS
     <html>
       <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8" />
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script>
           $(document).ready(function() {
@@ -64,6 +64,8 @@ class TestRackApp
 
   def hello_page(env)
     params = Rack::Utils.parse_query(env['rack.input'].gets)
+    hello_comment = params['hello_comment']
+    hello_comment.force_encoding('UTF-8')
     case params['hello_cond']
     when 'good'
       hello_cond_star_count = 3
@@ -74,13 +76,15 @@ class TestRackApp
     end
     html = <<-EOS
     <html>
-      <head></head>
+      <head>
+        <meta charset="UTF-8" />
+      </head>
       <body>
         <div class="hello_msg">
           Hello, World!!
         </div>
         <div class="hello_comment">
-          #{params['hello_comment']}
+          #{hello_comment}
         </div>
         <div class="hello_cond">
           #{'<span class="hello_cond_star">★</span>' * hello_cond_star_count}
