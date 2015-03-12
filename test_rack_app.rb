@@ -53,6 +53,7 @@ class TestRackApp
             <option value="bad">いまいち</option>
           </select>
           <input type="submit" id="hello_button" value="Hello!" />
+          <textarea id="hello_msg_area" name="hello_message"></textarea>
         </form>
         <div id="hello_response">ボタンを押して</div>
         <button type="button" id="greetings_button">AJAX</button>
@@ -65,7 +66,9 @@ class TestRackApp
   def hello_page(env)
     params = Rack::Utils.parse_query(env['rack.input'].gets)
     hello_comment = params['hello_comment']
+    hello_message = params['hello_message']
     hello_comment.force_encoding('UTF-8')
+    hello_message.force_encoding('UTF-8')
     case params['hello_cond']
     when 'good'
       hello_cond_star_count = 3
@@ -86,6 +89,7 @@ class TestRackApp
         <div class="hello_comment">
           #{hello_comment}
         </div>
+        <textarea class="hello_message">#{hello_message}</textarea>
         <div class="hello_cond">
           #{'<span class="hello_cond_star">★</span>' * hello_cond_star_count}
         </div>

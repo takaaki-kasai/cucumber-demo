@@ -12,6 +12,10 @@ end
   page.find(t_css).set(t_with)
 end
 
+もし(/^".*?\((.*?)\)" に以下の内容を入力し(?:、|た)$/) do |t_css, t_doc|
+  page.find(t_css).set(t_doc)
+end
+
 もし(/^".*?\((.*?)\)" リストで ".*?\((.*?)\)" を選択し(?:、|た)$/) do |t_css, t_with|
   target_node = page.find(t_css)
   target_node_option = target_node.find(%'option[value="#{t_with}"]')
@@ -33,6 +37,16 @@ end
     expect(target_elem.value).to eq(t_str)
   else
     expect(target_elem.text).to eq(t_str)
+  end
+end
+
+ならば(/^".*?\((.*?)\)" に以下の内容が表示され(?:、|ていること)$/) do |t_css, t_doc|
+  target_elem = page.find(t_css)
+  case target_elem.tag_name
+  when 'input', 'option'
+    expect(target_elem.value).to eq(t_doc)
+  else
+    expect(target_elem.text).to eq(t_doc)
   end
 end
 
