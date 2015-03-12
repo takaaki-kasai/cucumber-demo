@@ -7,6 +7,24 @@ end
   page.find(t_css).click
 end
 
+#===
+
+もし(/^".*?\((.*?)\)" に "(.*?)" と入力し(?:、|た)$/) do |t_css, t_with|
+  page.find(t_css).set(t_with)
+end
+
+もし(/^".*?\((.*?)\)" リストで ".*?\((.*?)\)" を選択し(?:、|た)$/) do |t_css, t_with|
+  target_node = page.find(t_css)
+  target_node_option = target_node.find(%'option[value="#{t_with}"]')
+  target_node_option.select_option
+end
+
+ならば(/^".*?\((.*?)\)" が (\d+) 個であ(?:り、|ること)$/) do |t_css, t_count|
+  expect(page).to have_css(t_css, :count => t_count)
+end
+
+#===
+
 ならば(/^".*?\((.*?)\)" に "(.*?)" と表示され(?:、|ていること)$/) do |t_css, t_str|
   target_elem = page.find(t_css)
   case target_elem.tag_name
