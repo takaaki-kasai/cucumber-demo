@@ -3,8 +3,7 @@
   visit t_path
 end
 
-もし(/^".*?\((.*?)\)" をクリックし(?:、|た)(\(非同期\))?$/) do |t_css, t_async|
-  wait_for_ajax if t_async
+もし(/^".*?\((.*?)\)" をクリックし(?:、|た)$/) do |t_css|
   page.find(t_css).click
 end
 
@@ -30,7 +29,8 @@ end
   expect(page).to have_css(t_css, :count => t_count)
 end
 
-ならば(/^".*?\((.*?)\)" に "(.*?)" と表示され(?:、|ていること)$/) do |t_css, t_str|
+ならば(/^".*?\((.*?)\)" に "(.*?)" と表示され(?:、|ていること)(\(非同期\))?$/) do |t_css, t_str, t_async|
+  wait_for_ajax if t_async
   target_elem = page.find(t_css)
   case target_elem.tag_name
   when 'input', 'option'

@@ -29,6 +29,6 @@
 
     ならば "返事(#hello_response)" に "ボタンを押して" と表示されていること
 
-    もし "あいさつボタン(#greetings_button)" をクリックした(非同期)
+    もし "あいさつボタン(#greetings_button)" をクリックした
 
-    ならば "返事(#hello_response)" に "どうも" と表示されていること
+    ならば "返事(#hello_response)" に "どうも" と表示されていること(非同期)
